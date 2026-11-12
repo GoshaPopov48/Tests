@@ -1,7 +1,6 @@
 import pytest
-from conftest import api_client, project_id
-from schemas.issue_schemas import IssuesSchemas
-
+from tests.conftest import api_client, project_id
+from framework.api.models.requests.issue_schemas import IssuesSchemas
 
 @pytest.mark.parametrize(
     "summary, description",
@@ -9,17 +8,15 @@ from schemas.issue_schemas import IssuesSchemas
         (" ", "Is description created in the the test api task")
     ]
 )
-def test_created_without_name_issue(api_client, project_id, summary, description):
+def test_created_without_name_issue(issue_client, project_id, summary, description):
     issue_data = IssuesSchemas(
             project = {"id": project_id},
             summary = summary,
             description = description
         )
     
-    response = api_client.post("/api/issues",
-        params = {"fields": "id,type,summary,project(id,name)"},
-        json = issue_data.model_dump()
-        )
+    response = issue_client.create_issue(issue_data)
+    
     
     print("BODY:", response.text)
     

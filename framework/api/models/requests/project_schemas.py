@@ -12,4 +12,4 @@ class ProjectSchemas(BaseModel):
 
 class ProjectUpdateSchemas(BaseModel):
     name: str
-    description: str
+    shortName: str

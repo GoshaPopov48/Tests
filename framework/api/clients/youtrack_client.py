@@ -1,15 +1,13 @@
-import os
 import requests
-from dotenv import load_dotenv
-
-load_dotenv()
+from config.settings import Settings
 
 class YouTrackClient():
 
     def __init__(self):
-        self.base_url = os.getenv("BASE_URL")
-    
-        token =  os.getenv("API_TOKEN")
+        
+        self.base_url = Settings.BASE_URL
+        token =  Settings.API_TOKEN
+        
         assert token, "API_TOKEN не найден"
     
         self.session = requests.Session()
