@@ -1,6 +1,8 @@
 import pytest
 from framework.api.models.requests.project_schemas import ProjectUpdateSchemas
 from framework.api.models.responses.project_schemas import ResponseUpdateSchemas
+from framework.api.clients.response_client import ResponseClient
+
 
 @pytest.mark.parametrize(
     "name, shortName",
@@ -18,8 +20,7 @@ def test_updated_project(project_client, created_project,  name, shortName):
     
     response = project_client.update_project(created_project, project_data)
     
-    assert response.status_code == 200, response.text
-    
+    ResponseClient.check_response_success(response)
     data = response.json()
     
     project = ResponseUpdateSchemas.model_validate(data)

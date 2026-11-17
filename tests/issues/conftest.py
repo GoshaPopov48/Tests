@@ -1,6 +1,8 @@
 import pytest
 from framework.api.clients.issues_client import IssuesClient
 from framework.api.models.requests.issue_schemas import IssuesSchemas
+from framework.api.clients.response_client import ResponseClient
+
 
 @pytest.fixture
 def issue_client(api_client):
@@ -14,7 +16,7 @@ def create_issue(issue_client, project_id):
         description="Description for auto create"
 )
     response = issue_client.create_issue(issue_data)
-    assert response.status_code == 200, response.text
+    ResponseClient.check_response_success(response)
     
     issue_id = response.json()["id"]
     

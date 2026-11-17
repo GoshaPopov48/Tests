@@ -1,6 +1,7 @@
 import pytest
 from framework.api.models.requests.issue_schemas import IssuesUpdatedSchemas
 from framework.api.models.responses.issue_schemas import IssuesUpdatedSchemasResponse
+from framework.api.clients.response_client import ResponseClient
 
 @pytest.mark.parametrize(
     "summary, description",
@@ -17,9 +18,7 @@ def test_updated_issue(issue_client, create_issue, summary, description):
     )
     response = issue_client.update_issue(create_issue, issue_data)
     
-    assert response.status_code == 200, response.text
-    
-    data = response.json()
+    data = ResponseClient.check_response_success(response)
     issue = IssuesUpdatedSchemasResponse.model_validate(data)
     
     assert issue.summary == issue_data.summary

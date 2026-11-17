@@ -1,6 +1,8 @@
 import pytest
 from tests.conftest import api_client, project_id
 from framework.api.models.requests.issue_schemas import IssuesSchemas
+from framework.api.clients.response_client import ResponseClient
+
 
 @pytest.mark.parametrize(
     "summary, description",
@@ -20,5 +22,5 @@ def test_created_without_name_issue(issue_client, project_id, summary, descripti
     
     print("BODY:", response.text)
     
-    assert response.status_code == 400
+    ResponseClient.check_response_error(response)
     

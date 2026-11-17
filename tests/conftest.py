@@ -12,6 +12,8 @@ from framework.api.models.requests.project_schemas import ProjectSchemas
 from framework.api.models.responses.project_schemas import ProjectResponse
 from framework.api.models.requests.issue_schemas import IssuesSchemas
 from framework.api.models.responses.issue_schemas import IssueResponse
+from framework.api.clients.response_client import ResponseClient
+
 
 
 # Фикстура для подключения 
@@ -53,7 +55,7 @@ def created_project(project_client, get_user_id):
     
     response = project_client.create_project(project_data)
     
-    assert response.status_code == 200, response.text
+    ResponseClient.check_response_success(response)
     
     data = response.json()
     
@@ -76,7 +78,7 @@ def project_id(project_client, get_user_id):
     )
     
     response = project_client.create_project(project_data)
-    assert response.status_code == 200, response.text
+    assert ResponseClient.check_response_success(response)
     
     data = response.json()
     project = ProjectResponse.model_validate(data)
@@ -84,14 +86,14 @@ def project_id(project_client, get_user_id):
     
     delete = project_client.delete_project(project.id)
     
-    assert delete.status_code == 200, response.text
+    ResponseClient.check_response_success(delete)
 
 
 # Фикстура для создания задачи в проекте
 @pytest.fixture 
 def created_issue_id(issue_client, project_id):
     issue_data = IssuesSchemas(
-        project = project_id,
+        project = {"id": project_id},
         summary = generated_name_issues("test"),
         description = generated_description_issue("test")
     )
@@ -106,4 +108,4 @@ def created_issue_id(issue_client, project_id):
     
     delete_issue = issue_client.delete_issue(issue.id)
     
-    assert delete_issue.status_code == 200, response.text
+    ResponseClient.check_response_success(delete_issue)

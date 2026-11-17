@@ -1,5 +1,6 @@
 import pytest
 from framework.api.models.requests.project_schemas import ProjectSchemas
+from framework.api.clients.response_client import ResponseClient
 
 @pytest.mark.parametrize(
     "name, shortName",
@@ -17,6 +18,6 @@ def test_created_project_no_without_project_id(project_client, get_user_id, name
     )
     
     response = project_client.create_project(project_data)
-    assert response.status_code == 400, response.text
+    ResponseClient.check_response_error(response)
     
 

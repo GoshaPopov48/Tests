@@ -4,6 +4,8 @@ from framework.api.clients.projects_client import ProjectClient
 from framework.api.models.requests.project_schemas import ProjectSchemas
 from framework.api.models.responses.project_schemas import ProjectResponse
 from test_data.factories import generated_id_project, generated_name_project
+from framework.api.clients.response_client import ResponseClient
+
 
 @pytest.fixture
 def project_client(api_client):
@@ -21,7 +23,7 @@ def created_project(project_client, get_user_id):
     
     response = project_client.create_project(project_data)
     
-    assert response.status_code == 200, response.text
+    ResponseClient.check_response_success(response)
     
     data = response.json()
     

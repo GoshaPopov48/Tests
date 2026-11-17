@@ -1,7 +1,7 @@
 import pytest
 from framework.api.models.requests.project_schemas import ProjectSchemas
 from framework.api.models.responses.project_schemas import ProjectResponse
-
+from framework.api.clients.response_client import ResponseClient
 
 
 
@@ -24,7 +24,7 @@ def test_created_project(project_client, get_user_id, name, shortName):
     
     response = project_client.create_project(project_data)
     
-    assert response.status_code == 200, response.text
+    ResponseClient.check_response_success(response)
     
     data = response.json()
     

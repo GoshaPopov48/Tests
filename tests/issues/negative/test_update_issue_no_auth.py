@@ -1,5 +1,6 @@
 import pytest
 from framework.api.models.requests.issue_schemas import IssuesUpdatedSchemas
+from framework.api.clients.response_client import ResponseClient
 
 
 @pytest.mark.parametrize(
@@ -24,4 +25,4 @@ def test_update_issue_non_authorization(issue_client, create_issue, summary, des
 
     print("BODY:", response.text)
 
-    assert response.status_code == 401
+    ResponseClient.check_response_error_forbidden(response)

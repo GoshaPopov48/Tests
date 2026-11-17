@@ -1,6 +1,7 @@
 import pytest
 from framework.api.models.requests.issue_schemas import IssuesSchemas
 from framework.api.models.responses.issue_schemas import IssueResponse
+from framework.api.clients.response_client import ResponseClient
 
 
 @pytest.mark.parametrize(
@@ -22,9 +23,9 @@ def test_created_issue(issue_client, project_id, summary, description):
     
     response = issue_client.create_issue(issue_data)
     
-    assert response.status_code == 200, response.text
     
-    data = response.json()
+    data = ResponseClient.check_response_success(response)
+    
     issue = IssueResponse.model_validate(data)
     
     assert issue.summary == issue_data.summary
